@@ -1,0 +1,58 @@
+.header {
+    background-color: #fff;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 22px;
+    align-items: center;
+
+    &_title {
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    &_logout {
+        color: black;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 9px 15px;
+        background-color: unset;
+        transition: all 0.2s ease-out;
+
+        &:hover {
+            background-color: rgb(255, 237, 237);
+            border: 1px solid rgb(255, 155, 155);
+        }
+    }
+
+    &_user-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        font-weight: 400;
+    }
+
+    &_create-article {
+        color: #52C41A;
+        border: 1px solid #52C41A;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    &_sign-up {
+        color: #52C41A;
+        border: 1px solid #52C41A;
+        border-radius: 5px;
+        padding: 9px 15px;
+    }
+
+    &_button-wrapper {
+        align-items: center;
+
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+}

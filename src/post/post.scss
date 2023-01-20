@@ -1,0 +1,91 @@
+.post {
+    width: 941px;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 15px;
+    gap: 7px;
+    filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+
+    &_tag {
+        min-width: 10px;
+        min-height: 22px;
+    }
+
+    &_tags {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &_title {
+        color: #1890FF;
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 100;
+    }
+
+    &_header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &_button-like {
+        background-color: unset;
+        border: unset;
+        cursor: pointer;
+    }
+
+    &_created-date {
+        font-size: 12px;
+        line-height: 22px;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    &_article {
+        display: flex;
+        flex-direction: column;
+
+
+        &-header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+        }
+
+        &-title-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+        }
+    }
+
+    &_likes {
+        display: flex;
+        flex-direction: row;
+        gap: 3px;
+        align-items: center;
+    }
+
+
+    &_author {
+
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        &-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+}
