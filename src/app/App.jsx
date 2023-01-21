@@ -27,7 +27,7 @@ function App() {
           <Route path='new-article' element={<ArticleForm />} />
           <Route path='profile' element={<EditProfile />} />
           <Route path='articles/:slug' element={<OnePost />} />
-          <Route path='*' element={<h1>Соси соси НЕ НАЙДЕНО 404</h1>} />
+          <Route path='*' element={<h1>404</h1>} />
         </Route>
       </Routes>
     </Provider>
