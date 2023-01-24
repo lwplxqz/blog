@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import './one-post.scss'
+import './OnePost.scss'
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Tag, Avatar, Spin } from 'antd';
 import ReactMarkdown from 'react-markdown'
 import { useSelector } from 'react-redux';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { format } from 'date-fns';
-import { useGetOnePostQuery, useGetLoggedUserQuery, useDeletePostMutation, useSwitchFavoriteMutation } from '../store/postsApi';
+import { useGetOnePostQuery, useGetLoggedUserQuery, useDeletePostMutation, useSwitchFavoriteMutation } from '../../store/postsApi';
 
 
 function OnePost() {

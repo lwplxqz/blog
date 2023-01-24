@@ -1,12 +1,8 @@
-
 import React, { useState } from 'react';
 import { Pagination, Spin } from 'antd';
-
-
-
-import Post from '../post/post';
-import { useGetPostsQuery } from '../store/postsApi';
-import './post-list.scss'
+import Post from '../../components/Post/Post';
+import { useGetPostsQuery } from '../../store/postsApi';
+import './PostList.scss'
 
 function PostList() {
 

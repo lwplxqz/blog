@@ -1,13 +1,11 @@
 /* eslint-disable consistent-return */
-
 /* eslint-disable react/jsx-props-no-spreading */
-
 import React, { useEffect } from 'react';
-import './sign-up.scss'
+import './SignUp.scss'
 import { Spin } from 'antd';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserMutation } from '../store/postsApi';
+import { useCreateUserMutation } from '../../store/postsApi';
 
 
 function SignUp() {
@@ -44,6 +42,24 @@ function SignUp() {
 
     const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+    const validateRequiredPatternMinMax = (required, pattern, min, max) => {
+        const rules = {
+            required: required ? 'Required field' : undefined,
+            pattern: pattern ? {
+                value: pattern,
+                message: 'Type correct value'
+            } : undefined,
+            minLength: min ? {
+                value: min,
+                message: `Minimum length is ${min} symbols`
+            } : undefined,
+            maxLength: max ? {
+                value: max,
+                message: `Maximum length is ${max} symbols`
+            } : undefined
+        }
+        return rules
+    }
 
     return (
         <div className="sign-up_wrapper">
@@ -52,22 +68,14 @@ function SignUp() {
                 <h5 className="sign-up_title">Create New Account</h5>
                 <label htmlFor="username" className='sign-up_label'>
                     Username
-                    <input type="text" name="username" id="username" className='sign-up_input' placeholder='Username' {...register('username', {
-                        required: 'Введите имя пользователя',
-                        minLength: {
-                            value: 3,
-                            message: 'Минимальная длина имени пользователя должа составлять 3 символа'
-                        },
-                        maxLength: {
-                            value: 20,
-                            message: 'Максимальная длина имени пользователя должа составлять 20 символов'
-                        },
-                        pattern: {
-                            value: /^[a-z0-9]*$/,
-                            message: 'You can only use lowercase English letters and numbers',
-                        }
-
-                    })} />
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        className='sign-up_input'
+                        placeholder='Username'
+                        {...register('username', validateRequiredPatternMinMax(true, /^[a-z0-9]*$/, 3, 20)
+                        )} />
                     {errors?.username && <p className='sign-up_error'>{errors.username.message}</p>}
                     {error?.data.errors.username && <p className='sign-in_error'>Username {error.data.errors.username}</p>}
                 </label>
@@ -80,14 +88,8 @@ function SignUp() {
                         type='text'
                         id='email'
                         placeholder='Email addres'
-                        className='sign-up_input'{...register('email', {
-                            required: 'Введите Email',
-
-                            pattern: {
-                                value: emailPattern,
-                                message: 'Введите корректый Email'
-                            }
-                        })} />
+                        className='sign-up_input'
+                        {...register('email', validateRequiredPatternMinMax(true, emailPattern))} />
                     {errors?.email && <p className='sign-up_error'>{errors.email.message}</p>}
                     {error?.data.errors.email && <p className='sign-in_error'>Email {error.data.errors.email}</p>}
                 </label>
@@ -101,17 +103,7 @@ function SignUp() {
                         id='password'
                         className='sign-up_input'
                         placeholder='Password'
-                        {...register("password", {
-                            required: "Введите пароль",
-                            minLength: {
-                                value: 6,
-                                message: 'Не менее 6 символов'
-                            },
-                            maxLength: {
-                                value: 40,
-                                message: 'Не более 40 символов'
-                            },
-                        })}
+                        {...register("password", validateRequiredPatternMinMax(true, undefined, 6, 40))}
                     />
                     {errors?.password && <p className='sign-up_error'>{errors.password.message}</p>}
                 </label>
@@ -128,7 +120,7 @@ function SignUp() {
                             required: true,
                             validate: (val) => {
                                 if (watch('password') !== val) {
-                                    return "Пароли не совпадают";
+                                    return "Passwords doesn't match";
                                 }
                             },
                         })}
@@ -143,9 +135,7 @@ function SignUp() {
 
                     <input type="checkbox" name="terms-agree" id="terms-agree" className='sign-up_checkbox' {...register(
                         'terms_agree',
-                        {
-                            required: 'Обязательно к заполнению'
-                        }
+                        validateRequiredPatternMinMax(true)
                     )} />
                     <div className='sign-up_terms-wrapper'>
                         I agree to the processing of my personal information

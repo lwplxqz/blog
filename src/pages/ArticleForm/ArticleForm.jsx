@@ -3,20 +3,19 @@
 import React, { useEffect } from 'react';
 import { Spin } from 'antd';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useCreateArticleMutation, useGetOnePostQuery, useEditArticleMutation } from '../store/postsApi';
+import { useCreateArticleMutation, useGetOnePostQuery, useEditArticleMutation } from '../../store/postsApi';
 
-import './article-form.scss'
+import './ArticleForm.scss'
 
 function getDataArticleForm() {
-
     const { slug } = useParams()
-
     const { data, isLoading } = useGetOnePostQuery({ slug }, {
         skip: !slug
     })
     let isEditing = false
+    const loggedUser = localStorage.getItem('loggedUser')
 
     if (slug) {
         isEditing = true
@@ -25,10 +24,18 @@ function getDataArticleForm() {
         return <Spin />
     }
 
+    if (isEditing && loggedUser) {
+        if (loggedUser !== data?.article?.author.username) {
+            return <Navigate to='/articles' />
+        }
+    }
+
+
     return (<ArticleForm isEditing={isEditing} postData={data} />);
 }
 
 function ArticleForm({ isEditing, postData }) {
+
     const token = localStorage.getItem('token')
 
     const navigate = useNavigate()
@@ -73,7 +80,12 @@ function ArticleForm({ isEditing, postData }) {
         defaultValues
     })
 
-
+    const requiredField = {
+        required: {
+            value: true,
+            message: "Required field"
+        }
+    }
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -118,12 +130,7 @@ function ArticleForm({ isEditing, postData }) {
                         id="title"
                         className="article-form_input"
                         placeholder='Title'
-                        {...register('title', {
-                            required: {
-                                value: true,
-                                message: "Required field"
-                            }
-                        })} />
+                        {...register('title', requiredField)} />
                     {errors?.title && <p className='article-form_error'>{errors.title.message}</p>}
                 </label>
                 <label
@@ -135,12 +142,7 @@ function ArticleForm({ isEditing, postData }) {
                         id="description"
                         className="article-form_input"
                         placeholder='Description'
-                        {...register('description', {
-                            required: {
-                                value: true,
-                                message: "Required field"
-                            }
-                        })} />
+                        {...register('description', requiredField)} />
                     {errors?.description && <p className='article-form_error'>{errors.description.message}</p>}
                 </label>
                 <label
@@ -148,12 +150,7 @@ function ArticleForm({ isEditing, postData }) {
                     className="article-form_label">
                     Text
                     <textarea id="body" className="article-form_input article-form_textarea"
-                        placeholder='Text' {...register('body', {
-                            required: {
-                                value: true,
-                                message: "Required field"
-                            },
-                        })} />
+                        placeholder='Text' {...register('body', requiredField)} />
                     {errors?.body && <p className='article-form_error'>{errors.body.message}</p>}
                 </label>
                 <label
@@ -163,12 +160,10 @@ function ArticleForm({ isEditing, postData }) {
                     {fields.map((item, index) => (
                         <div key={item.id}>
                             <div className="article-form_tag-wrapper" >
-                                <input type="text" className="article-form_input article-form_input-tag" placeholder='Tag' {...register(`tags.${index}.tag`, {
-                                    required: {
-                                        value: true,
-                                        message: "Required field"
-                                    }
-                                })} />
+                                <input type="text"
+                                    className="article-form_input article-form_input-tag"
+                                    placeholder='Tag'
+                                    {...register(`tags.${index}.tag`, requiredField)} />
                                 <button type='button' className='article-form_delete-tag' onClick={() => remove(index)}>Delete</button>
                             </div>
                             {errors?.tags && <p className='article-form_error article-form_error-tag'>{errors?.tags[index]?.tag.message}</p>}
@@ -186,10 +181,11 @@ function ArticleForm({ isEditing, postData }) {
 export default getDataArticleForm;
 
 ArticleForm.defaultProps = {
-    postData: {}
+    isEditing: false,
+    postData: {},
 }
 
 ArticleForm.propTypes = {
-    isEditing: PropTypes.bool.isRequired,
-    postData: PropTypes.objectOf(PropTypes.object()),
+    isEditing: PropTypes.bool,
+    postData: PropTypes.objectOf(Object),
 }

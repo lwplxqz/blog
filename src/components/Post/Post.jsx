@@ -1,13 +1,13 @@
 
 import React from 'react';
-import './post.scss'
+import './Post.scss'
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { Tag, Avatar, Spin } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import ReactMarkdown from 'react-markdown'
 import PropTypes from 'prop-types'
-import { useSwitchFavoriteMutation } from '../store/postsApi';
+import { useSwitchFavoriteMutation } from '../../store/postsApi';
 
 
 function Post({ postData }) {
@@ -85,5 +85,5 @@ Post.defaultProps = {
 }
 
 Post.propTypes = {
-    postData: PropTypes.objectOf(PropTypes.object()),
+    postData: PropTypes.objectOf(Object),
 }

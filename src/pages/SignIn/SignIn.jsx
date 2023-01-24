@@ -3,11 +3,11 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Spin } from 'antd';
-import './sign-in.scss'
+import './SignIn.scss'
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setToken } from '../store/loginSlice';
-import { useLoginUserMutation } from '../store/postsApi';
+import { setToken } from '../../store/loginSlice';
+import { useLoginUserMutation } from '../../store/postsApi';
 
 function SignIn() {
 
@@ -31,9 +31,11 @@ function SignIn() {
 
     useEffect(() => {
         if (data) {
+
             dispatch(setToken(data.user.token))
             localStorage.removeItem('token')
             localStorage.setItem('token', data.user.token)
+            localStorage.setItem('loggedUser', data.user.username)
             navigate('/articles')
         }
     }, [data])
@@ -47,6 +49,17 @@ function SignIn() {
             email: email.toLowerCase(), password
         })
 
+    }
+
+    const validateRequiredPattern = (required, pattern) => {
+        const rules = {
+            required: required ? 'Required field' : undefined,
+            pattern: pattern ? {
+                value: pattern,
+                message: 'Type correct value'
+            } : undefined
+        }
+        return rules
     }
 
     return (
@@ -64,14 +77,7 @@ function SignIn() {
                         type='text'
                         id='email'
                         placeholder='Email addres'
-                        className='sign-in_input'{...register('email', {
-                            required: 'Введите Email',
-
-                            pattern: {
-                                value: emailPattern,
-                                message: 'Введите корректый Email'
-                            }
-                        })} />
+                        className='sign-in_input'{...register('email', validateRequiredPattern(true, emailPattern))} />
 
                     {errors?.email && <p className='sign-in_error'>{errors.email.message}</p>}
 
@@ -85,9 +91,7 @@ function SignIn() {
                         type='password'
                         id='password'
                         placeholder='Password'
-                        className='sign-in_input'{...register('password', {
-                            required: 'Введите Пароль',
-                        })} />
+                        className='sign-in_input'{...register('password', validateRequiredPattern(true))} />
 
                     {errors?.password && <p className='sign-in_error'>{errors.password.message}</p>}
 

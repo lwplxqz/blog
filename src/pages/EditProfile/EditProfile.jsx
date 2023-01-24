@@ -4,8 +4,8 @@ import React from 'react';
 import { Spin } from 'antd';
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux';
-import { useEditUserMutation } from '../store/postsApi';
-import './edit-profile.scss'
+import { useEditUserMutation } from '../../store/postsApi';
+import './EditProfile.scss'
 
 
 
@@ -48,6 +48,24 @@ function EditProfile() {
         editUser({ userData, token })
     }
 
+    const validateRequiredPatternMinMax = (required, pattern, min, max) => {
+        const rules = {
+            required: required ? 'Required field' : undefined,
+            pattern: pattern ? {
+                value: pattern,
+                message: 'Type correct value'
+            } : undefined,
+            minLength: min ? {
+                value: min,
+                message: `Minimum length is ${min} symbols`
+            } : undefined,
+            maxLength: max ? {
+                value: max,
+                message: `Maximum length is ${max} symbols`
+            } : undefined
+        }
+        return rules
+    }
 
     return (<div className="edit-profile_wrapper">
         <form className="edit-profile_form" onSubmit={handleSubmit(onSave)}>
@@ -61,21 +79,8 @@ function EditProfile() {
                     className='edit-profile_input'
                     placeholder='Username'
 
-                    {...register('username', {
-                        required: 'Введите имя пользователя',
-                        minLength: {
-                            value: 3,
-                            message: 'Минимальная длина имени пользователя должа составлять 3 символа'
-                        },
-                        maxLength: {
-                            value: 20,
-                            message: 'Максимальная длина имени пользователя должа составлять 20 символов'
-                        },
-                        pattern: {
-                            value: /^[a-z0-9]*$/,
-                            message: 'You can only use lowercase English letters and numbers',
-                        }
-                    })} />
+                    {...register('username', validateRequiredPatternMinMax(true, /^[a-z0-9]*$/, 3, 20)
+                    )} />
                 {errors?.username && <p className='edit-profile_error'>{errors.username.message}</p>}
                 {error?.data.errors.username && <p className='sign-in_error'>Username {error.data.errors.username}</p>}
             </label>
@@ -88,14 +93,8 @@ function EditProfile() {
                     type='text'
                     id='email'
                     placeholder='Email addres'
-                    className='edit-profile_input'{...register('email', {
-                        required: 'Введите Email',
-
-                        pattern: {
-                            value: emailPattern,
-                            message: 'Введите корректый Email'
-                        }
-                    })} />
+                    className='edit-profile_input'{...register('email', validateRequiredPatternMinMax(true, emailPattern)
+                    )} />
                 {errors?.email && <p className='edit-profile_error'>{errors.email.message}</p>}
                 {error?.data.errors.email && <p className='sign-in_error'>Email {error.data.errors.email}</p>}
             </label>
@@ -109,16 +108,8 @@ function EditProfile() {
                     id='password'
                     className='edit-profile_input'
                     placeholder='New password'
-                    {...register("password", {
-                        minLength: {
-                            value: 6,
-                            message: 'Не менее 6 символов'
-                        },
-                        maxLength: {
-                            value: 40,
-                            message: 'Не более 40 символов'
-                        },
-                    })}
+                    {...register("password", validateRequiredPatternMinMax(false, false, 6, 40)
+                    )}
                 />
                 {errors?.password && <p className='edit-profile_error'>{errors.password.message}</p>}
             </label>
@@ -132,12 +123,8 @@ function EditProfile() {
                     id="image"
                     placeholder='Avatar image'
                     className='edit-profile_input'
-                    {...register('image', {
-                        pattern: {
-                            value: urlPattern,
-                            message: 'Введите корректный url'
-                        }
-                    })}
+                    {...register('image', validateRequiredPatternMinMax(false, urlPattern)
+                    )}
                 />
                 {errors?.image && <p className='edit-profile_error'>{errors.image.message}</p>}
             </label>

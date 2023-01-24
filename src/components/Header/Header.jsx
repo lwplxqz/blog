@@ -3,15 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spin, Avatar } from 'antd';
-import { setToken, setLoggedUserData } from '../store/loginSlice';
-
-import './header.scss'
-import { useGetLoggedUserQuery } from '../store/postsApi';
+import { setToken, setLoggedUserData } from '../../store/loginSlice';
+import { noImage, token as localToken } from '../../shared';
+import './Header.scss'
+import { useGetLoggedUserQuery } from '../../store/postsApi';
 
 
 function Header() {
-
-    const noImage = 'https://static.productionready.io/images/smiley-cyrus.jpg'
 
     const apiKey = useSelector(store => store.login.token)
 
@@ -21,9 +19,7 @@ function Header() {
 
     const [userData, setUserData] = useState(undefined)
 
-    const localApiKey = localStorage.getItem('token')
-
-    const token = apiKey || localApiKey
+    const token = apiKey || localToken
 
     const {
         data: loggedData,
