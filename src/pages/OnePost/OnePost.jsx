@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import './OnePost.scss'
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Tag, Avatar, Spin } from 'antd';
 import ReactMarkdown from 'react-markdown'
 import { useSelector } from 'react-redux';
-import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { format } from 'date-fns';
 import { useGetOnePostQuery, useGetLoggedUserQuery, useDeletePostMutation, useSwitchFavoriteMutation } from '../../store/postsApi';
+import stylesHeader from "../../components/Post/Post.module.scss"
+import styles from "./OnePost.module.scss"
+import LikeButton from '../../shared/LikeButton';
 
 
 function OnePost() {
@@ -44,8 +45,8 @@ function OnePost() {
     }, [deleteSuccess])
 
     if (isLoading || isLoggedLoading) {
-        return <div className="one-post_wrapper">
-            <div className='one-post'>
+        return <div className={styles["one-post_wrapper"]}>
+            <div className={styles['one-post']}>
 
                 <Spin />
             </div>
@@ -63,11 +64,11 @@ function OnePost() {
         deletePost({ slug, token })
     }
 
-    const popUp = (<div className='one-post_delete-popup'>
-        <p className="one-post_popup-text">Are you sure to delete this article?</p>
-        <div className="one-post_popup-button-wrapper">
-            <button type='button' className='one-post_popup-disagree' onClick={onDelete}>No</button>
-            <button type='button' className='one-post_popup-agree' onClick={onDeleteAgree}>Yes</button>
+    const popUp = (<div className={styles['one-post_delete-popup']}>
+        <p className={styles["one-post_popup-text"]}>Are you sure to delete this article?</p>
+        <div className={styles["one-post_popup-button-wrapper"]}>
+            <button type='button' className={styles['one-post_popup-disagree']} onClick={onDelete}>No</button>
+            <button type='button' className={styles['one-post_popup-agree']} onClick={onDeleteAgree}>Yes</button>
         </div>
     </div>)
 
@@ -83,46 +84,39 @@ function OnePost() {
     }
     const isPostAuthor = username === loggedData?.user?.username
 
-    const liked = favorited ?
-        (<button type='button' className='post_button-like' onClick={onSwitch}>
-            <HeartFilled style={{ color: '#FF0707' }} />
-        </button>)
-        :
-        (<button type='button' className='post_button-like' onClick={onSwitch}>
-            <HeartOutlined />
-        </button>)
 
     const createdTime = format(new Date(createdAt), 'PPP')
 
     const tags = tagList.map(tagTitle => <Tag
-        className='post_tag'
+        className={stylesHeader.post_tag}
         key={tagTitle + Math.random()}>
         {tagTitle.length > 20 ? `${tagTitle.substr(0, 20)}...` : tagTitle}
     </Tag>)
 
     return (
-        <div className="one-post_wrapper">
-            <div className="one-post">
+        <div className={styles["one-post_wrapper"]}>
+            <div className={styles["one-post"]}>
                 {isPopupVisible && popUp}
-                <div className='post_header'>
-                    <div className='post_article-header'>
-                        <div className="post_article-title-wrapper">
+                <div className={stylesHeader.post_header}>
+                    <div className={stylesHeader['post_article-header']}>
+                        <div className={stylesHeader["post_article-title-wrapper"]}>
 
-                            <h5 className="post_title">{title}</h5>
+                            <h5 className={stylesHeader.post_title}>{title}</h5>
 
-                            <div className="post_likes">
-                                {liked}
-                                <div className="post_likes-count">{favoritesCount}</div>
+                            <div className={stylesHeader.post_likes}>
+                                <LikeButton favorited={favorited} onSwitch={onSwitch} />
+                                <div className={stylesHeader['post_likes-count']}>{favoritesCount}</div>
+
                             </div>
                         </div>
-                        <div className="post_tags">{tags}</div>
+                        <div className={stylesHeader.post_tags}>{tags}</div>
                     </div>
-                    <div className="post_author-header">
-                        <div className="post_author-wrapper">
-                            <div className="post_username">{
+                    <div className={stylesHeader["post_author-header"]}>
+                        <div className={stylesHeader["post_author-wrapper"]}>
+                            <div className={stylesHeader.post_username}>{
                                 username
                             }</div>
-                            <div className="post_created-date">{createdTime}</div>
+                            <div className={stylesHeader["post_created-date"]}>{createdTime}</div>
                         </div>
                         <Avatar
                             size={46}
@@ -130,19 +124,19 @@ function OnePost() {
                         />
                     </div>
                 </div>
-                <div className="post_body">
-                    <div className="post_description one-post_description">
-                        <div className="one-post_description-wrapper">
+                <div className={stylesHeader.post_body}>
+                    <div className={styles["one-post_description"]}>
+                        <div className={styles["one-post_description-wrapper"]}>
                             <ReactMarkdown>
                                 {description}
                             </ReactMarkdown>
                         </div>
-                        {isPostAuthor && <div className="one-post_author-buttons">
-                            <button type='button' className='one-post_delete' onClick={onDelete}>Delete</button>
-                            <Link to={`/articles/${slug}/edit`} className='one-post_edit'>Edit</Link>
+                        {isPostAuthor && <div className={styles["one-post_author-buttons"]}>
+                            <button type='button' className={styles['one-post_delete']} onClick={onDelete}>Delete</button>
+                            <Link to={`/articles/${slug}/edit`} className={styles['one-post_edit']}>Edit</Link>
                         </div>}
                     </div>
-                    <div className="post_main-text">
+                    <div className={stylesHeader["post_main-text"]}>
                         <ReactMarkdown>
                             {body}
                         </ReactMarkdown>

@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux';
 import { useEditUserMutation } from '../../store/postsApi';
-import './EditProfile.scss'
+import styles from './EditProfile.module.scss'
 
 
 
@@ -67,72 +67,72 @@ function EditProfile() {
         return rules
     }
 
-    return (<div className="edit-profile_wrapper">
-        <form className="edit-profile_form" onSubmit={handleSubmit(onSave)}>
-            <h5 className="edit-profile_title">Edit profile</h5>
-            <label htmlFor="username" className='edit-profile_label'>
+    return (<div className={styles["edit-profile_wrapper"]}>
+        <form className={styles["edit-profile_form"]} onSubmit={handleSubmit(onSave)}>
+            <h5 className={styles["edit-profile_title"]}>Edit profile</h5>
+            <label htmlFor="username" className={styles['edit-profile_label']}>
                 Username
                 <input
                     type="text"
                     name="username"
                     id="username"
-                    className='edit-profile_input'
+                    className={styles['edit-profile_input']}
                     placeholder='Username'
 
                     {...register('username', validateRequiredPatternMinMax(true, /^[a-z0-9]*$/, 3, 20)
                     )} />
-                {errors?.username && <p className='edit-profile_error'>{errors.username.message}</p>}
-                {error?.data.errors.username && <p className='sign-in_error'>Username {error.data.errors.username}</p>}
+                {errors?.username && <p className={styles['edit-profile_error']}>{errors.username.message}</p>}
+                {error?.data.errors.username && <p className={styles['edit-profile_error']}>Username {error.data.errors.username}</p>}
             </label>
 
             <label
                 htmlFor='email'
-                className='edit-profile_label'>
+                className={styles['edit-profile_label']}>
                 Email addres
                 <input
                     type='text'
                     id='email'
                     placeholder='Email addres'
-                    className='edit-profile_input'{...register('email', validateRequiredPatternMinMax(true, emailPattern)
+                    className={styles['edit-profile_input']}{...register('email', validateRequiredPatternMinMax(true, emailPattern)
                     )} />
-                {errors?.email && <p className='edit-profile_error'>{errors.email.message}</p>}
-                {error?.data.errors.email && <p className='sign-in_error'>Email {error.data.errors.email}</p>}
+                {errors?.email && <p className={styles['edit-profile_error']}>{errors.email.message}</p>}
+                {error?.data.errors.email && <p className={styles['edit-profile_error']}>Email {error.data.errors.email}</p>}
             </label>
 
             <label
                 htmlFor='password'
-                className='edit-profile_label'>
+                className={styles['edit-profile_label']}>
                 New password
                 <input
                     type='password'
                     id='password'
-                    className='edit-profile_input'
+                    className={styles['edit-profile_input']}
                     placeholder='New password'
                     {...register("password", validateRequiredPatternMinMax(false, false, 6, 40)
                     )}
                 />
-                {errors?.password && <p className='edit-profile_error'>{errors.password.message}</p>}
+                {errors?.password && <p className={styles['edit-profile_error']}>{errors.password.message}</p>}
             </label>
 
             <label
                 htmlFor='image'
-                className='edit-profile_label'>
+                className={styles['edit-profile_label']}>
                 Avatar image (url)
                 <input
                     type="text"
                     id="image"
                     placeholder='Avatar image'
-                    className='edit-profile_input'
+                    className={styles['edit-profile_input']}
                     {...register('image', validateRequiredPatternMinMax(false, urlPattern)
                     )}
                 />
-                {errors?.image && <p className='edit-profile_error'>{errors.image.message}</p>}
+                {errors?.image && <p className={styles['edit-profile_error']}>{errors.image.message}</p>}
             </label>
             {isLoading && <Spin />}
             <input
                 type="submit"
                 value="Save"
-                className='edit-profile_button' />
+                className={styles['edit-profile_button']} />
         </form>
     </div>);
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Pagination, Spin } from 'antd';
 import Post from '../../components/Post/Post';
 import { useGetPostsQuery } from '../../store/postsApi';
-import './PostList.scss'
+import styles from './PostList.module.scss'
 
 function PostList() {
 
@@ -35,7 +35,7 @@ function PostList() {
 
 
     return (<>
-        <ul className='post-list'>{posts}</ul>
+        <ul className={styles['post-list']}>{posts}</ul>
         <Pagination
             onChange={onPaginationChange}
             total={articlesCount}

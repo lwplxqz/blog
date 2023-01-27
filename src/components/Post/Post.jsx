@@ -1,13 +1,14 @@
 
 import React from 'react';
-import './Post.scss'
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { Tag, Avatar, Spin } from 'antd';
-import { HeartFilled, HeartOutlined } from '@ant-design/icons'
-import ReactMarkdown from 'react-markdown'
+
 import PropTypes from 'prop-types'
+import ReactMarkdown from 'react-markdown'
+import styles from './Post.module.scss'
 import { useSwitchFavoriteMutation } from '../../store/postsApi';
+import LikeButton from '../../shared/LikeButton';
 
 
 function Post({ postData }) {
@@ -18,7 +19,7 @@ function Post({ postData }) {
     const { username, image } = author
     const token = localStorage.getItem('token')
     const tags = tagList.map(tagTitle => <Tag
-        className='post_tag'
+        className={styles.post_tag}
         key={tagTitle + Math.random()}>
         {tagTitle.length > 20 ? `${tagTitle.substr(0, 20)}...` : tagTitle}
     </Tag>)
@@ -32,45 +33,37 @@ function Post({ postData }) {
         }
     }
 
-    const liked = favorited ?
-        (<button type='button' className='post_button-like' onClick={onSwitch}>
-            <HeartFilled style={{ color: '#FF0707' }} />
-        </button>)
-        :
-        (<button type='button' className='post_button-like' onClick={onSwitch}>
-            <HeartOutlined />
-        </button>)
 
     const createdTime = format(new Date(createdAt), 'PPP')
     const postDescription = description.length > 90 ? `${description.substr(0, 90)}...` : description
 
 
-    return (<li className='post'>
-        <div className='post_header'>
-            <div className='post_article-header'>
-                <div className="post_article-title-wrapper">
+    return (<li className={styles.post}>
+        <div className={styles.post_header}>
+            <div className={styles['post_article-header']}>
+                <div className={styles["post_article-title-wrapper"]}>
                     <Link to={`/articles/${slug}`}>
-                        <h5 className="post_title">{postTitle}</h5>
+                        <h5 className={styles.post_title}>{postTitle}</h5>
                     </Link>
-                    <div className="post_likes">
-                        {liked}
-                        <div className="post_likes-count">{favoritesCount}</div>
+                    <div className={styles.post_likes}>
+                        <LikeButton favorited={favorited} onSwitch={onSwitch} />
+                        <div className={styles["post_likes-count"]}>{favoritesCount}</div>
                         {isLoading && <Spin />}
                     </div>
                 </div>
-                <div className="post_tags">{tags}</div>
+                <div className={styles.post_tags}>{tags}</div>
             </div>
-            <div className="post_author-header">
-                <div className="post_author-wrapper">
-                    <div className="post_username">{username}</div>
-                    <div className="post_created-date">{createdTime}</div>
+            <div className={styles["post_author-header"]}>
+                <div className={styles["post_author-wrapper"]}>
+                    <div className={styles.post_username}>{username}</div>
+                    <div className={styles["post_created-date"]}>{createdTime}</div>
                 </div>
                 <Avatar
                     size={46}
                     src={image} />
             </div>
         </div>
-        <div className="post_body">
+        <div className={styles.post_body}>
             <ReactMarkdown>
                 {postDescription}
             </ReactMarkdown>
