@@ -102,7 +102,7 @@ function ArticleForm({ isEditing, postData }) {
     }, [])
     const slug = article?.slug
     const onPost = ({ title, body, description, tags }) => {
-        const postTags = tags.map(elem => elem.tag)
+        const postTags = tags?.map(elem => elem.tag)
 
         const articleData = { title, body, description, tagList: postTags }
         if (!slug) {
