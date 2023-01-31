@@ -24,7 +24,7 @@ function Post({ postData }) {
         {tagTitle.length > 20 ? `${tagTitle.substr(0, 20)}...` : tagTitle}
     </Tag>)
 
-    const postTitle = title.length > 40 ? `${title.substr(0, 40)}...` : title
+    const postTitle = title?.length > 40 ? `${title.substr(0, 40)}...` : title
 
     const onSwitch = () => {
         const method = favorited ? 'DELETE' : 'POST'
