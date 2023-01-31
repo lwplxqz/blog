@@ -35,7 +35,7 @@ function Post({ postData }) {
 
 
     const createdTime = format(new Date(createdAt), 'PPP')
-    const postDescription = description.length > 90 ? `${description.substr(0, 90)}...` : description
+    const postDescription = description?.length > 90 ? `${description.substr(0, 90)}...` : description
 
 
     return (<li className={styles.post}>
